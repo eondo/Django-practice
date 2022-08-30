@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>당신의 소속과 이름을 적어주세요.</h1>
+  <form action="/catch/" method="GET">
+    <label for="department">소속</label>
+    <input type="text" id="department" name="department">
+    <br>
+    <label for="name">이름</label>
+    <input type="text" id="name" name="name">
+    <input type="submit">
+  </form>
+  <a href="{% url 'index' %}">홈 화면으로 이동</a>
+{% endblock content %}
