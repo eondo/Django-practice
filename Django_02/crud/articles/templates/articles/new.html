@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>NEW</h1>
+  <form action="{% url 'articles:create' %}" method="POST"> <!-- 태그 통해서 Queryset으로 보내겠다 !-->
+    {% csrf_token %}
+    <label for="title">Title : </label>
+    <input type="text" id="title" name="title">
+    <br>
+    <label for="content">Content : </label>
+    <textarea name="content" id="cpmtemt"></textarea>
+    <br>
+    <input type="submit">
+  </form>  
+{% endblock content %}
