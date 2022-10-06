@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+
+{% block content %}
+  <h1 class="mt-4">DETAIL</h1>
+  <a href="{% url 'votes:index' %}">BACK</a>
+  <hr>
+  <h1 class="text-center">{{ vote.title }}</h1>
+  <div class="d-flex justify-content-between">
+    <span>{{ vote.issue_a }}</span>
+    <span>{{ vote.issue_b }}</span>
+  </div>
+
+  <div class="progress">
+    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ percent_b }}%" aria-valuenow="{{ percent_b }}" aria-valuemin="0" aria-valuemax="100">{{ percent_b }}%</div>
+    <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ percent_r }}%" aria-valuenow="{{ percent_r }}" aria-valuemin="0" aria-valuemax="100">{{ percent_r }}%</div>
+  </div>
+  <hr>
+  <h4>댓글 작성</h4>
+  <form action="{% url 'votes:comments_create' vote.pk %}" method="POST">
+    {% csrf_token %}
+    {% bootstrap_form comment_form %}
+    {% buttons %}
+    <button type="submit" class="btn btn-dark">
+      작성
+    </button>
+  {% endbuttons %}
+  </form>
+  <hr>
+  <h4>댓글 목록</h4>
+  <ul class="list-group">
+    {% for comment in comments %}
+      {% if comment.pick == 'BLUE' %}
+        <li class="list-group-item" style="background-color: #F5FFFA;">{{ comment.content }}</li>
+      {% else %}
+        <li class="list-group-item" style="background-color: #FFF5EE;">{{ comment.content }}</li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+{% endblock content %}
+

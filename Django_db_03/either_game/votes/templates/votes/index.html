@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+  <h1><b>Either Game</b></h1>
+  <a class="btn" style="background-color: LightCoral;color: white" href="{% url 'votes:create' %}" role="button">New Question</a>
+  <a class="btn" style="background-color: PowderBlue;color: white" href="#" role="button">Random Question</a>
+  <a class="btn btn-primary" href="#" role="button">Link</a>
+  <hr>
+  {% for vote in votes %}
+    <div class="d-flex">
+      {{ vote.title }}
+      <a class="btn btn-primary" href="{% url 'votes:detail' vote.pk %}" role="button">PLAY</a>
+    </div>
+  {% endfor %}
+{% endblock content %}
