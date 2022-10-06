@@ -43,8 +43,12 @@ def detail(request, pk):
         elif comment.pick == 'RED':
             cnt_red += 1
 
-    percent_b = round(cnt_blue / (cnt_blue + cnt_red) * 100, 2)
-    percent_r = 100 - percent_b
+    percent_b = 0
+    percent_r = 0
+
+    if cnt_blue > 0 or cnt_red > 0:
+        percent_b = round(cnt_blue / (cnt_blue + cnt_red) * 100, 2)
+        percent_r = 100 - percent_b
 
     context = {
         'vote': vote,
@@ -65,3 +69,16 @@ def comments_create(request, pk):
         comment.save()
 
     return redirect('votes:detail', vote.pk)
+
+
+def random(request):
+    import random
+    
+    votes = Vote.objects.all()
+    ids = []
+    for vote in votes:
+        ids.append(vote.id)
+    
+    id = random.choice(ids)
+
+    return redirect('votes:detail', id)
