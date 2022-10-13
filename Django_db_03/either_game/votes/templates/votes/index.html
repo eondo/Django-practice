@@ -2,15 +2,30 @@
 
 
 {% block content %}
-  <h1><b>Either Game</b></h1>
-  <a class="btn" style="background-color: LightCoral;color: white" href="{% url 'votes:create' %}" role="button">New Question</a>
-  <a class="btn" style="background-color: PowderBlue;color: white" href="#" role="button">Random Question</a>
-  <a class="btn btn-primary" href="#" role="button">Link</a>
+  <h1 class="mt-4"><b>Either Game</b></h1>
+  <a class="btn" style="background-color: RoyalBlue;color: white;" href="{% url 'votes:create' %}" role="button">New Question</a>
+  <a class="btn btn-dark" href="{% url 'votes:random' %}" role="button">Random Question</a>
   <hr>
-  {% for vote in votes %}
+  <div class="row">
+    {% for vote in votes %}
+      <div class="col-sm-6 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <p class="card-title">{{ vote.title }}</p>
+            <a href="{% url 'votes:detail' vote.pk %}" class="badge bg-light text-dark rounded-pill" style="text-decoration:none">PLAY</a>
+          </div>
+        </div>
+      </div>
+      <br>
+    {% endfor %}
+  </div>
+{% endblock content %}
+
+
+
+{% comment %} {% for vote in votes %}
     <div class="d-flex">
       {{ vote.title }}
       <a class="btn btn-primary" href="{% url 'votes:detail' vote.pk %}" role="button">PLAY</a>
     </div>
-  {% endfor %}
-{% endblock content %}
+  {% endfor %} {% endcomment %}

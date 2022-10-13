@@ -2,40 +2,42 @@
 {% load bootstrap5 %}
 
 {% block content %}
-  <h1 class="mt-4">DETAIL</h1>
-  <a href="{% url 'votes:index' %}">BACK</a>
+  <h1 class="mt-4"><b>DETAIL</b></h1>
+  <a href="{% url 'votes:index' %}" class="badge text-dark rounded-pill" style="text-decoration:none;background-color: #DCDCDC">BACK</a>
   <hr>
   <h1 class="text-center">{{ vote.title }}</h1>
-  <div class="d-flex justify-content-between">
-    <span>{{ vote.issue_a }}</span>
-    <span>{{ vote.issue_b }}</span>
+  <div class="d-flex justify-content-between mb-1">
+    <span class="badge bg-light text-dark">👍 {{ vote.issue_a }}</span>
+    <span class="badge bg-light text-dark">✌ {{ vote.issue_b }}</span>
   </div>
-
+  <!--프로그래스 바-->
   <div class="progress">
     <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ percent_b }}%" aria-valuenow="{{ percent_b }}" aria-valuemin="0" aria-valuemax="100">{{ percent_b }}%</div>
     <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ percent_r }}%" aria-valuenow="{{ percent_r }}" aria-valuemin="0" aria-valuemax="100">{{ percent_r }}%</div>
   </div>
   <hr>
-  <h4>댓글 작성</h4>
+  <h4 class="mt-4 fw-lighter">Leave your comment!</h4>
   <form action="{% url 'votes:comments_create' vote.pk %}" method="POST">
     {% csrf_token %}
     {% bootstrap_form comment_form %}
     {% buttons %}
-    <button type="submit" class="btn btn-dark">
-      작성
+    <button type="submit" class="btn btn-sm btn-dark" >
+      Submit
     </button>
-  {% endbuttons %}
+    {% endbuttons %}
   </form>
   <hr>
-  <h4>댓글 목록</h4>
-  <ul class="list-group">
-    {% for comment in comments %}
-      {% if comment.pick == 'BLUE' %}
-        <li class="list-group-item" style="background-color: #F5FFFA;">{{ comment.content }}</li>
-      {% else %}
-        <li class="list-group-item" style="background-color: #FFF5EE;">{{ comment.content }}</li>
-      {% endif %}
-    {% endfor %}
-  </ul>
+  <h4 class="mt-4 fw-lighter">Comments</h4>
+  <div class="mb-5">
+    <ul class="list-group">
+      {% for comment in comments %}
+        {% if comment.pick == 'BLUE' %}
+          <li class="list-group-item" style="background-color: #F0F8FF;">{{ comment.content }}</li>
+        {% else %}
+          <li class="list-group-item" style="background-color: #FFE4E1;">{{ comment.content }}</li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
 {% endblock content %}
 
