@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<hr>
+  <h2><b>{{ person.username }}님의 프로필</b></h2>
+
+  {% if request.user != person %}
+  <form action="{% url 'accounts:follow' person.pk %}" method="POST">
+    {% csrf_token %}
+    {% if request.user in person.followers.all %}
+      <button type="submit" class="btn btn-danger btn-sm">Unfollow</button>
+    {% else %}
+      <button type="submit" class="btn btn-primary btn-sm">Follow</button>  
+    {% endif %}
+  </form>
+  {% endif %}
+
+  <p>팔로워 {{ person.followers.all|length }} | 팔로잉 {{ person.followings.all|length }}</p>
+  <p>[팔로워 목록]</p>
+  {% for user in person.followers.all %}
+    <p>{{ user.username }}</p>
+  {% endfor %}
+  <p>[팔로잉 목록]</p>
+  {% for user in person.followings.all %}
+    <p>{{ user.username }}</p>
+  {% endfor %}
+
+  <h5>📝작성 게시글 목록</h5>
+  {% for article in person.article_set.all %}
+    <div>• {{ article.title }}</div>
+  {% endfor %}
+  <hr>
+  <h5>✏작성 댓글 목록</h5>
+  {% for comment in person.comment_set.all %}
+    <div>• {{ comment.content }}</div>
+  {% endfor %}
+  <hr>
+  <h5>❤게시글 목록</h5>
+  {% for article in person.like_articles.all %}
+    <div>• {{ article.title }}</div>
+  {% endfor %}
+  <br>
+  <a href="{% url 'articles:index' %}">BACK</a>
+{% endblock content %}
