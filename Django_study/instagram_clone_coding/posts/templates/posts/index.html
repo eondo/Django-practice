@@ -8,12 +8,11 @@
       <input type="submit" class="btn btn-danger" value="Logout">
     </form>
     <form action="{% url 'accounts:delete' %}">
-      {% csrf_token %}
+      {% comment %} {% csrf_token %} {% endcomment %}
       <input type="submit" class="btn btn-secondary" value="회원 탈퇴">
     </form>
-
-
   {% endif %}
+
   <h1>Index</h1>
   {% comment %} <div style="border-style: solid;"> {% endcomment %}
   <div class="card-group">
@@ -41,7 +40,8 @@
       {% csrf_token %}
       <input type="submit" class="btn btn-danger" value="Delete">
     </form> {% endcomment %}
+    {% endfor %}
   </div>
   {% comment %} </div> {% endcomment %}
-  {% endfor %}
+  
 {% endblock content %}
