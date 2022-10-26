@@ -3,35 +3,44 @@
 {% block content %}
   {% if request.user.is_authenticated %}
     <h3>Hello! {{ user.username }}</h3>
-    <form action="{% url 'accounts:logout' %}" method="POST">
-      {% csrf_token %}
-      <input type="submit" class="btn btn-danger" value="Logout">
-    </form>
-    <form action="{% url 'accounts:delete' %}">
-      {% comment %} {% csrf_token %} {% endcomment %}
-      <input type="submit" class="btn btn-secondary" value="회원 탈퇴">
-    </form>
+    <div class="d-flex">
+      <form action="{% url 'accounts:logout' %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" class="btn btn-secondary" value="로그아웃">
+      </form>
+      
+      <a href="{% url 'accounts:update' %}" class="btn btn-success">프로필 수정</a>
+      <a href="{% url 'accounts:update' %}" class="btn btn-primary">비밀번호 변경</a>
+
+      <form action="{% url 'accounts:delete' %}">
+        {% comment %} {% csrf_token %} {% endcomment %}
+        <input type="submit" class="btn btn-danger" value="회원 탈퇴">
+      </form>
+    </div>
   {% endif %}
 
   <h1>Index</h1>
   {% comment %} <div style="border-style: solid;"> {% endcomment %}
-  <div class="card-group">
+  <div class="row row-cols-1 row-cols-md-3 g-4">
     {% for post in posts %}
-    <div class="card" style="width: 18rem;">
-      {% if post.image %}
-        <img class="card-img-top" src="{{ post.image.url }}" alt="{{ article.image }}">
-      {% endif %}
-      <div class="card-body">
-        <p class="card-text">{{ post.content }}</p>
-        <div class="d-flex">
-          <a href="{% url 'posts:update' post.pk %}" class="btn btn-dark">Edit</a>
-          <form action="{% url 'posts:delete' post.pk %}" method="POST">
-            {% csrf_token %}
-            <input type="submit" class="btn btn-danger" value="Delete">
-          </form>
+    <div class="col">
+      <div class="card">
+        {% if post.image %}
+          <img class="card-img-top" src="{{ post.image.url }}" alt="{{ article.image }}">
+        {% endif %}
+        <div class="card-body">
+          <p class="card-text">{{ post.content }}</p>
+          <div class="d-flex">
+            <a href="{% url 'posts:update' post.pk %}" class="btn btn-dark">Edit</a>
+            <form action="{% url 'posts:delete' post.pk %}" method="POST">
+              {% csrf_token %}
+              <input type="submit" class="btn btn-danger" value="Delete">
+            </form>
+          </div>
         </div>
       </div>
     </div>
+    {% endfor %}
     {% comment %} {% if post.image %}
       <img src="{{ post.image.url }}" alt="{{ article.image }}">
     {% endif %}
@@ -40,7 +49,6 @@
       {% csrf_token %}
       <input type="submit" class="btn btn-danger" value="Delete">
     </form> {% endcomment %}
-    {% endfor %}
   </div>
   {% comment %} </div> {% endcomment %}
   
