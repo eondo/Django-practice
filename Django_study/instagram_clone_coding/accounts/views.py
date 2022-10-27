@@ -7,7 +7,12 @@ from django.contrib.auth import update_session_auth_hash
 
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_http_methods, require_POST, require_safe
+
+
 # Create your views here.
+@require_http_methods(['GET', 'POST'])
 def login(request):
     if request.user.is_authenticated:
         return redirect('posts:index')
@@ -16,7 +21,7 @@ def login(request):
         form = AuthenticationForm(request, request.POST)
         if form.is_valid():
             auth_login(request, form.get_user())
-            return redirect('posts:index')
+            return redirect(request.GET.get('next') or 'posts:index')
     else:
         form = AuthenticationForm()
     context = {
@@ -25,12 +30,14 @@ def login(request):
     return render(request, 'accounts/login.html', context)
 
 
+@require_POST
 def logout(request):
     if request.user.is_authenticated:
         auth_logout(request)
     return redirect('accounts:login')
 
 
+@require_http_methods(['GET', 'POST'])
 def signup(request):
     if request.user.is_authenticated:
         return redirect('posts:index')
@@ -49,6 +56,7 @@ def signup(request):
     return render(request, 'accounts/signup.html', context)
 
 
+@require_http_methods(['GET', 'POST'])
 def delete(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -60,6 +68,8 @@ def delete(request):
     return redirect('accounts:login')
 
 
+@login_required
+@require_http_methods(['GET', 'POST'])
 def update(request):
     if request.method == 'POST':
         form = CustomUserChangeForm(request.POST, instance=request.user)
@@ -74,6 +84,8 @@ def update(request):
     return render(request, 'accounts/update.html', context)
 
 
+@login_required
+@require_http_methods(['GET', 'POST'])
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
